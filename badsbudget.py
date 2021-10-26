@@ -50,9 +50,19 @@ class Badsbudget:
         returns a list of utilities per slot.
         """
         # TODO: Fill this in
-        utilities = []   # Change this
+        clicks = history.round(t-1).clicks
+        slot_info = self.slot_info(t, history, reserve)
+        print(clicks)
+        # Change this
+        utilities = []
+        for i in range(len(clicks)):
+            payment = slot_info[i][1]
+            if payment >= self.value or payment >= self.budget:
+                util = 0
+            else:
+                util = clicks[i]*(self.value - payment)
 
-        
+            utilities.append(util)
         return utilities
 
     def target_slot(self, t, history, reserve):
@@ -68,22 +78,22 @@ class Badsbudget:
         return info[i]
 
     def bid(self, t, history, reserve):
-        # The Balanced bidding strategy (BB) is the strategy for a player j that, given
-        # bids b_{-j},
-        # - targets the slot s*_j which maximizes his utility, that is,
-        # s*_j = argmax_s {clicks_s (v_j - t_s(j))}.
-        # - chooses his bid b' for the next round so as to
-        # satisfy the following equation:
-        # clicks_{s*_j} (v_j - t_{s*_j}(j)) = clicks_{s*_j-1}(v_j - b')
-        # (p_x is the price/click in slot x)
-        # If s*_j is the top slot, bid the value v_j
-
+ 
         prev_round = history.round(t-1)
         (slot, min_bid, max_bid) = self.target_slot(t, history, reserve)
 
         # TODO: Fill this in.
-        bid = 0  # change this
-        
+        utilities = self.expected_utils(t, history, reserve)
+        # If my utility is higher than others, bid low. Else bid high
+        max_rat = 0
+        bid = 0
+        slot_info = self.slot_info(t, history, reserve)
+        for u in range(len(utilities)):
+            if slot_info[u][1] == 0:
+                bid = utilities[u]
+            elif utilities[u] / slot_info[u][1] > max_rat:
+                bid = utilities[u]
+
         return bid
 
     def __repr__(self):

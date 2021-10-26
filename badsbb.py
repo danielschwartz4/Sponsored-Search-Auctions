@@ -30,13 +30,12 @@ class Badsbb:
         other_bids = [a_id_b for a_id_b in prev_round.bids if a_id_b[0] != self.id]
 
         clicks = prev_round.clicks
-        print(clicks)
         def compute(s):
             (min, max) = GSP.bid_range_for_slot(s, clicks, reserve, other_bids)
             if max == None:
                 max = 2 * min
             return (s, min, max)
-            
+
         info = list(map(compute, list(range(len(clicks)))))
 #        sys.stdout.write("slot info: %s\n" % info)
         return info
@@ -53,6 +52,7 @@ class Badsbb:
         # TODO: Fill this in
         clicks = history.round(t-1).clicks
         slot_info = self.slot_info(t, history, reserve)
+        print(clicks)
         # Change this
         utilities = []
         for i in range(len(clicks)):
@@ -63,7 +63,8 @@ class Badsbb:
                 util = clicks[i]*(self.value - payment)
 
             utilities.append(util)
-        
+        print('ROUND', t)
+        print('UTILITIES', utilities)
         return utilities
 
     def target_slot(self, t, history, reserve):

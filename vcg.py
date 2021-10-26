@@ -25,7 +25,6 @@ class VCG:
             (in order)
          - per_click_payments is the corresponding payments.
         """
-
         # The allocation is the same as GSP, so we filled that in for you...
 
         valid = lambda a_bid: a_bid[1] >= reserve
@@ -52,10 +51,14 @@ class VCG:
             n = len(allocation)
 
             # TODO: Compute the payment and return it.
+            
+
+
             if k == n - 1:
                 return slot_clicks[k] * max(bids[k + 1][1], reserve)
             else:
-                return (slot_clicks[k] - slot_clicks[k + 1])*bids[k + 1][1] + allocation[k + 1]
+                # return (slot_clicks[k] - slot_clicks[k + 1])*bids[k + 1][1] + allocation[k + 1]
+                return (slot_clicks[k] - slot_clicks[k + 1])*bids[k + 1][1] + total_payment(k+1)
 
         def norm(totals):
             """Normalize total payments by the clicks in each slot"""
