@@ -37,7 +37,7 @@ class Badsbb:
             return (s, min, max)
 
         info = list(map(compute, list(range(len(clicks)))))
-#        sys.stdout.write("slot info: %s\n" % info)
+    #    sys.stdout.write("slot info: %s\n" % info)
         return info
 
 
@@ -52,19 +52,16 @@ class Badsbb:
         # TODO: Fill this in
         clicks = history.round(t-1).clicks
         slot_info = self.slot_info(t, history, reserve)
-        print(clicks)
         # Change this
         utilities = []
-        for i in range(len(clicks)):
-            payment = slot_info[i][1]
-            if payment >= self.value:
+        for i in range(len(slot_info)):
+            slot_id, min_payment, max_payment = slot_info[i]
+            if min_payment >= self.value:
                 util = 0
             else:
-                util = clicks[i]*(self.value - payment)
+                util = clicks[i]*(self.value - min_payment)
 
             utilities.append(util)
-        print('ROUND', t)
-        print('UTILITIES', utilities)
         return utilities
 
     def target_slot(self, t, history, reserve):
@@ -104,5 +101,4 @@ class Badsbb:
     def __repr__(self):
         return "%s(id=%d, value=%d)" % (
             self.__class__.__name__, self.id, self.value)
-
 
