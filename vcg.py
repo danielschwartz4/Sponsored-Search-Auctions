@@ -52,12 +52,9 @@ class VCG:
 
             # TODO: Compute the payment and return it.
             
-
-
             if k == n - 1:
                 return slot_clicks[k] * max(bids[k + 1][1], reserve)
             else:
-                # return (slot_clicks[k] - slot_clicks[k + 1])*bids[k + 1][1] + allocation[k + 1]
                 return (slot_clicks[k] - slot_clicks[k + 1])*bids[k + 1][1] + total_payment(k+1)
 
         def norm(totals):
