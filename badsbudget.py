@@ -57,10 +57,10 @@ class Badsbudget:
         utilities = []
         for i in range(len(clicks)):
             payment = slot_info[i][1]
-            if payment >= self.value or payment >= self.budget:
+            if payment >= self.value or payment >= self.budget/2:
                 util = 0
             else:
-                util = clicks[i]*(self.value - payment)
+                util = clicks[i]*(self.value - payment) 
 
             utilities.append(util)
         return utilities
@@ -84,17 +84,23 @@ class Badsbudget:
 
         # TODO: Fill this in.
         utilities = self.expected_utils(t, history, reserve)
-        # If my utility is higher than others, bid low. Else bid high
-        max_rat = 0
-        bid = 0
-        slot_info = self.slot_info(t, history, reserve)
-        for u in range(len(utilities)):
-            if slot_info[u][1] == 0:
-                bid = utilities[u]
-            elif utilities[u] / slot_info[u][1] > max_rat:
-                bid = utilities[u]
-
+        if slot == 0:
+            bid = self.value
+        else:
+            bid = self.value - utilities[slot]/prev_round.clicks[slot - 1]
         return bid
+        # utilities = self.expected_utils(t, history, reserve)
+        # # If my utility is higher than others, bid low. Else bid high
+        # max_rat = 0
+        # bid = 0
+        # slot_info = self.slot_info(t, history, reserve)
+        # for u in range(len(utilities)):
+        #     if slot_info[u][1] == 0:
+        #         bid = utilities[u]
+        #     elif utilities[u] / slot_info[u][1] > max_rat:
+        #         bid = utilities[u]
+
+        # return bid
 
     def __repr__(self):
         return "%s(id=%d, value=%d)" % (
