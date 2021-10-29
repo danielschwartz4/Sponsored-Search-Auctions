@@ -361,9 +361,15 @@ def main(args):
 
     # Averages are over all the value permutations considered
     N = float(num_perms) * options.iters
+    avbudg = 0
+    avbb = 0
     logging.info("%s\t\t%s\t\t%s" % ("#" * 15, "RESULTS", "#" * 15))
     logging.info("")
     for a in range(n):
+        if agents_to_run[a] == 'Badsbudget':
+            avbudg += 0.01 * totals[a]/N
+        if agents_to_run[a] == 'Badsbb':
+            avbb += 0.01 * totals[a]/N
         logging.info("Stats for Agent %d, %s" % (a, agents_to_run[a]) )
         logging.info("Average spend $%.2f (daily)" % (0.01 *total_spent[a]/N)  )
         logging.info("Average  utility  $%.2f (daily)" % (0.01 * totals[a]/N))
@@ -372,7 +378,8 @@ def main(args):
     m = mean(total_revenues)
     std = stddev(total_revenues)
     logging.warning("Average daily revenue (stddev): $%.2f ($%.2f)" % (0.01 * m, 0.01*std))
-
+    print('AVBUDGE', avbudg/5)
+    print('AVBB', avbb/5)
 #print "config", config.budget
 
 

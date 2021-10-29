@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-
+import math
 from gsp import GSP
 from util import argmax_index
 
@@ -52,12 +52,11 @@ class Badsbudget:
         # TODO: Fill this in
         clicks = history.round(t-1).clicks
         slot_info = self.slot_info(t, history, reserve)
-        print(clicks)
         # Change this
         utilities = []
         for i in range(len(clicks)):
             payment = slot_info[i][1]
-            if payment >= self.value or payment >= self.budget/2:
+            if payment >= self.value or payment >= self.budget:
                 util = 0
             else:
                 util = clicks[i]*(self.value - payment) 
@@ -78,30 +77,22 @@ class Badsbudget:
         return info[i]
 
     def bid(self, t, history, reserve):
- 
         prev_round = history.round(t-1)
         (slot, min_bid, max_bid) = self.target_slot(t, history, reserve)
-
         # TODO: Fill this in.
-        utilities = self.expected_utils(t, history, reserve)
-        if slot == 0:
-            bid = self.value
+
+        # ORIGINALLY HAD THAT
+        # if sum(history.agents_spent) / history.n_agents <= self.value:
+        if sum(history.agents_spent) == 0:
+            print('MIN BID', min_bid)
+            # bid = math.sqrt(min_bid)
+            bid = 10
         else:
-            bid = self.value - utilities[slot]/prev_round.clicks[slot - 1]
+            bid = min_bid
+
+
         return bid
-        # utilities = self.expected_utils(t, history, reserve)
-        # # If my utility is higher than others, bid low. Else bid high
-        # max_rat = 0
-        # bid = 0
-        # slot_info = self.slot_info(t, history, reserve)
-        # for u in range(len(utilities)):
-        #     if slot_info[u][1] == 0:
-        #         bid = utilities[u]
-        #     elif utilities[u] / slot_info[u][1] > max_rat:
-        #         bid = utilities[u]
-
-        # return bid
-
+        
     def __repr__(self):
         return "%s(id=%d, value=%d)" % (
             self.__class__.__name__, self.id, self.value)
