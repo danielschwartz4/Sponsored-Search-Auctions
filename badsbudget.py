@@ -85,14 +85,15 @@ class Badsbudget:
         # if sum(history.agents_spent) / history.n_agents <= self.value:
         if sum(history.agents_spent) == 0:
             print('MIN BID', min_bid)
-            # bid = math.sqrt(min_bid)
-            bid = 10
+            bid = math.sqrt(min_bid)
+            # bid 10 works better for 5 5 5 but the above works better for 1 budget in big population of others
+            # bid = 10
         else:
             bid = min_bid
 
 
         return bid
-        
+
     def __repr__(self):
         return "%s(id=%d, value=%d)" % (
             self.__class__.__name__, self.id, self.value)
