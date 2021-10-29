@@ -51,7 +51,7 @@ class VCG:
             n = len(allocation)
 
             # TODO: Compute the payment and return it.
-            
+            bids.sort(key = lambda x: x[1], reverse=True)
             if k == n - 1:
                 return slot_clicks[k] * max(bids[k + 1][1], reserve)
             else:
