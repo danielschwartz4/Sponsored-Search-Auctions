@@ -57,7 +57,7 @@ class Badsbb:
         for i in range(len(slot_info)):
             slot_id, min_payment, max_payment = slot_info[i]
             if min_payment >= self.value:
-                util = 0
+                util = clicks[i]*(self.value - min_payment)
             else:
                 util = clicks[i]*(self.value - min_payment)
 
